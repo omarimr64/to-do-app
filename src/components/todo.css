@@ -1,0 +1,14 @@
+
+.todo-card:hover {
+  background-color: #1F1F1F;
+  border-color: #3C89E8;
+}
+
+.todo-checked {
+  background-color: #1b1a1a;
+  color: #4F4F4F
+}
+
+.modal button {
+  box-shadow: none;
+}
