@@ -30,10 +30,10 @@ const TodoList = function () {
   return (
     <>
       <Card
-        title={<Title>قائمة المهام</Title>}
+        title={<Title style={{ color: "white" }}>قائمة المهام</Title>}
         style={{
-          width: "100%",
-          height: "100%",
+          width: "100vw",
+          height: "100vh",
           border: "none",
           borderRadius: 0,
           textAlign: "right",
@@ -43,40 +43,43 @@ const TodoList = function () {
         styles={{
           body: {
             padding: 24,
-            width: "100%",
-            height: "100%",
+            width: "100vw",
+            height: "80vh",
             display: "flex",
             flexDirection: "column",
-            alignItems: "end",
+            alignItems: "start",
             flexGrow: 1,
           },
           header: {
-            flexShrink: 0,
             borderRadius: 0,
+            height: "fit-content",
           },
         }}
       >
         {/* CONTENT */}
 
         {/* FILTERING */}
-        <Segmented
-          size="large"
-          options={[
-            { label: "الكل", value: "all" },
-            { label: "المكتمل", value: "completed" },
-            { label: "الغير مكتمل", value: "uncompleted" },
-          ]}
-          direction="rtl"
-          style={{ marginBottom: "15px" }}
-          value={displayedTodosType}
-          onChange={(value) => setDisplayedTodosType(value)}
-        />
+        <div style={{ direction: "ltr" }}>
+          <Segmented
+            size="large"
+            options={[
+              { label: "الكل", value: "all" },
+              { label: "المكتمل", value: "completed" },
+              { label: "الغير مكتمل", value: "uncompleted" },
+            ]}
+            style={{
+              marginBottom: "15px",
+              height: "fit-content",
+            }}
+            value={displayedTodosType}
+            onChange={(value) => setDisplayedTodosType(value)}
+          />
+        </div>
 
         {/* TO DO LIST */}
         <div
           style={{
             overflowY: "auto",
-            // height: "48vh",
             width: "100%",
             flexGrow: 1,
             scrollbarWidth: "none",

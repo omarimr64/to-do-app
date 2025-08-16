@@ -3,7 +3,6 @@ import TodoList from "./components/TodoList";
 import { ConfigProvider, theme } from "antd";
 import { TodosContext } from "./contexts/TodosContext";
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { red } from "@ant-design/colors";
 
 const themeUI = {

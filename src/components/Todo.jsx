@@ -43,13 +43,13 @@ const Todo = function ({ todo }) {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              flexDirection: "row-reverse",
+              // flexDirection: "row-reverse",
             }}
           >
             <div
               style={{
                 display: "flex",
-                flexDirection: "row-reverse",
+                // flexDirection: "row-reverse",
                 justifyContent: "right",
                 gap: 20,
               }}
@@ -65,7 +65,7 @@ const Todo = function ({ todo }) {
                 <Title
                   style={{
                     margin: 0,
-                    color: todo.isCompleted ? "#4F4F4F" : "initial",
+                    color: todo.isCompleted ? "#4F4F4F" : "white",
                   }}
                   level={4}
                 >

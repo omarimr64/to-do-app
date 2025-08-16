@@ -9,6 +9,7 @@
 
   scrollbar-width: none;
   background-color: #1a1a1a;
+  direction: rtl;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

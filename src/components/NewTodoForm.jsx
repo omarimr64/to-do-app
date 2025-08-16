@@ -27,7 +27,7 @@ const NewTodoForm = function () {
   }
 
   return (
-    <>
+    <form style={{ height: "fit-content", width: "100%", flexShrink: 0 }}>
       <Input
         size="large"
         value={inputData.title}
@@ -62,7 +62,7 @@ const NewTodoForm = function () {
       >
         إضافة
       </Button>
-    </>
+    </form>
   );
 };
 
