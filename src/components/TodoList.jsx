@@ -1,6 +1,6 @@
-import { Typography, Card, Segmented, Button, Input } from "antd";
+import { Typography, Card, Segmented } from "antd";
 import Todo from "./Todo";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { TodosContext } from "../contexts/TodosContext";
 import NewTodoForm from "./NewTodoForm";
 
@@ -10,15 +10,17 @@ const TodoList = function () {
   const { todos, setTodos } = useContext(TodosContext);
   const [displayedTodosType, setDisplayedTodosType] = useState("all");
 
-  const renderedTodos = function () {
+  const renderedTodos = useMemo(() => {
     if (displayedTodosType === "all") return todos;
+
     if (displayedTodosType === "completed")
       return todos.filter((t) => t.isCompleted);
+
     if (displayedTodosType === "uncompleted")
       return todos.filter((t) => !t.isCompleted);
-  };
+  }, [todos, displayedTodosType]);
 
-  const todosList = renderedTodos().map((todo) => {
+  const todosList = renderedTodos.map((todo) => {
     return <Todo key={todo.id} todo={todo} />;
   });
 
