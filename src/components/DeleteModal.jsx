@@ -1,16 +1,23 @@
 import { useContext } from "react";
 import { TodosContext } from "../contexts/TodosContext";
 import { Modal } from "antd";
+import { MessageContext } from "../contexts/MessageContext";
 
 const DeleteModal = function ({ todo, modal }) {
   const { isDelModalOpen, setIsDelModalOpen } = modal;
   const { todos, setTodos } = useContext(TodosContext);
+  const { messageApi } = useContext(MessageContext);
 
   function handleDeleteTodo() {
     const updatedTodos = [...todos.filter((t) => t.id !== todo.id)];
 
     setTodos(updatedTodos);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
+
+    messageApi.open({
+      type: "success",
+      content: "تم حذف المهمة بنجاح",
+    });
     setIsDelModalOpen(false);
   }
 

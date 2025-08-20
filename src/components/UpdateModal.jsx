@@ -1,11 +1,13 @@
 import { Modal, Input } from "antd";
 import { useState, useContext, useEffect } from "react";
 import { TodosContext } from "../contexts/TodosContext";
+import { MessageContext } from "../contexts/MessageContext";
 
 const UpdateModal = function ({ todo, modal }) {
   const [editTodo, setEditTodo] = useState({ title: "", description: "" });
   const { isUpdModalOpen, setIsUpdModalOpen } = modal;
   const { todos, setTodos } = useContext(TodosContext);
+  const { messageApi } = useContext(MessageContext);
 
   useEffect(() => {
     if (!todo) return;
@@ -30,6 +32,11 @@ const UpdateModal = function ({ todo, modal }) {
 
     setTodos(updatedTodos);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
+
+    messageApi.open({
+      type: "success",
+      content: "تم تعديل المهمة بنجاح",
+    });
     setIsUpdModalOpen(false);
   }
 

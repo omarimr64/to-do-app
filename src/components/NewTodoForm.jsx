@@ -2,6 +2,7 @@ import { Input, Button } from "antd";
 import { TodosContext } from "../contexts/TodosContext";
 import { useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { MessageContext } from "../contexts/MessageContext";
 
 const NewTodoForm = function () {
   const [inputData, setInputData] = useState({
@@ -10,6 +11,7 @@ const NewTodoForm = function () {
   });
 
   const { todos, setTodos } = useContext(TodosContext);
+  const { messageApi } = useContext(MessageContext);
 
   function handleAddNewTodo() {
     const newTodo = {
@@ -23,7 +25,12 @@ const NewTodoForm = function () {
 
     setTodos(updatedTodos);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
+
     setInputData({ title: "", description: "" });
+    messageApi.open({
+      type: "success",
+      content: "تم إضافة المهمة بنجاح",
+    });
   }
 
   return (
