@@ -1,14 +1,20 @@
-import { Typography, Card, Segmented } from "antd";
+import { Typography, Card, Segmented, Modal } from "antd";
 import Todo from "./Todo";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { TodosContext } from "../contexts/TodosContext";
 import NewTodoForm from "./NewTodoForm";
+import UpdateModal from "./UpdateModal";
+import DeleteModal from "./DeleteModal";
 
 const { Title } = Typography;
 
 const TodoList = function () {
   const { todos, setTodos } = useContext(TodosContext);
   const [displayedTodosType, setDisplayedTodosType] = useState("all");
+
+  const [currentTodo, setCurrentTodo] = useState(null);
+  const [isDelModalOpen, setIsDelModalOpen] = useState(false);
+  const [isUpdModalOpen, setIsUpdModalOpen] = useState(false);
 
   const renderedTodos = useMemo(() => {
     if (displayedTodosType === "all") return todos;
@@ -21,13 +27,31 @@ const TodoList = function () {
   }, [todos, displayedTodosType]);
 
   const todosList = renderedTodos.map((todo) => {
-    return <Todo key={todo.id} todo={todo} />;
+    return (
+      <Todo
+        key={todo.id}
+        todo={todo}
+        openDelModal={openDelModal}
+        openUpdModal={openUpdModal}
+      />
+    );
   });
 
   useEffect(() => {
     const storageTodos = JSON.parse(localStorage.getItem("todos"));
     if (storageTodos) setTodos(storageTodos);
   }, []);
+
+  // Modals functions
+  function openDelModal(todo) {
+    setCurrentTodo(todo);
+    setIsDelModalOpen(true);
+  }
+
+  function openUpdModal(todo) {
+    setCurrentTodo(todo);
+    setIsUpdModalOpen(true);
+  }
 
   return (
     <>
@@ -108,6 +132,18 @@ const TodoList = function () {
         {/* FORM */}
         <NewTodoForm />
       </Card>
+
+      {/* DELETE MODAL */}
+      <DeleteModal
+        todo={currentTodo}
+        modal={{ isDelModalOpen, setIsDelModalOpen }}
+      />
+
+      {/* UPDATE MODAL */}
+      <UpdateModal
+        todo={currentTodo}
+        modal={{ isUpdModalOpen, setIsUpdModalOpen }}
+      />
     </>
   );
 };

@@ -1,29 +1,19 @@
 import "./todo.css";
 import { EditFilled, DeleteFilled } from "@ant-design/icons";
-import { Card, Button, Modal, Input, Checkbox, Typography } from "antd";
-import { useContext, useState } from "react";
+import { Card, Button, Checkbox, Typography } from "antd";
+import { useContext } from "react";
 import { TodosContext } from "../contexts/TodosContext";
-import UpdateModal from "./UpdateModal";
 
 const { Title } = Typography;
 
-const Todo = function ({ todo }) {
+const Todo = function ({ todo, openDelModal, openUpdModal }) {
   const { todos, setTodos } = useContext(TodosContext);
-  const [isDelModalOpen, setIsDelModalOpen] = useState(false);
-  const [isUpdModalOpen, setIsUpdModalOpen] = useState(false);
 
   function handleCheckTodo() {
     const updatedTodos = todos.map((t) => {
       if (t.id === todo.id) return { ...t, isCompleted: !t.isCompleted };
       return t;
     });
-
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
-  }
-
-  function handleDeleteTodo() {
-    const updatedTodos = [...todos.filter((t) => t.id !== todo.id)];
 
     setTodos(updatedTodos);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
@@ -81,41 +71,21 @@ const Todo = function ({ todo }) {
                 style={{ boxShadow: "none", outline: "none" }}
                 icon={<EditFilled />}
                 disabled={todo.isCompleted}
-                onClick={() => setIsUpdModalOpen(true)}
+                onClick={() => openUpdModal(todo)}
               ></Button>
 
               <Button
                 style={{ boxShadow: "none", outline: "none" }}
                 danger
                 icon={<DeleteFilled />}
-                onClick={() => setIsDelModalOpen(true)}
+                onClick={() => {
+                  openDelModal(todo);
+                }}
               ></Button>
             </div>
           </div>
         </Card>
       </label>
-
-      {/* DELETE MODAL */}
-      <Modal
-        title="هل تريد تأكيد الحذف"
-        // closable={{ "aria-label": "Custom Close Button" }}
-        open={isDelModalOpen}
-        okText={`حذف`}
-        cancelText={`إلغاء`}
-        okType="danger"
-        style={{
-          direction: "rtl",
-          textAlign: "right",
-        }}
-        centered
-        onOk={handleDeleteTodo}
-        onCancel={() => setIsDelModalOpen(false)}
-        className="modal"
-      >
-        <p>لا يمكنك التراجع عن الحذف في حال اختيار حذف</p>
-      </Modal>
-
-      <UpdateModal todo={todo} modal={{ isUpdModalOpen, setIsUpdModalOpen }} />
     </>
   );
 };
