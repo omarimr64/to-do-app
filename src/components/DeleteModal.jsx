@@ -1,12 +1,12 @@
 import { useContext } from "react";
 import { TodosContext } from "../contexts/TodosContext";
 import { Modal } from "antd";
-import { MessageContext } from "../contexts/MessageContext";
+import { useMessage } from "../contexts/MessageContext";
 
 const DeleteModal = function ({ todo, modal }) {
   const { isDelModalOpen, setIsDelModalOpen } = modal;
   const { todos, setTodos } = useContext(TodosContext);
-  const { messageApi } = useContext(MessageContext);
+  const { messageApi } = useMessage();
 
   function handleDeleteTodo() {
     const updatedTodos = [...todos.filter((t) => t.id !== todo.id)];

@@ -3,13 +3,13 @@ import { EditFilled, DeleteFilled } from "@ant-design/icons";
 import { Card, Button, Checkbox, Typography } from "antd";
 import { useContext } from "react";
 import { TodosContext } from "../contexts/TodosContext";
-import { MessageContext } from "./../contexts/MessageContext";
+import { useMessage } from "./../contexts/MessageContext";
 
 const { Title } = Typography;
 
 const Todo = function ({ todo, openDelModal, openUpdModal }) {
   const { todos, setTodos } = useContext(TodosContext);
-  const { messageApi } = useContext(MessageContext);
+  const { messageApi } = useMessage();
 
   function handleCheckTodo() {
     const updatedTodos = todos.map((t) => {

@@ -1,4 +1,4 @@
-import { Typography, Card, Segmented, Modal } from "antd";
+import { Typography, Card, Segmented } from "antd";
 import Todo from "./Todo";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { TodosContext } from "../contexts/TodosContext";
