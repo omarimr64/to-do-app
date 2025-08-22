@@ -1,12 +1,11 @@
 import "./App.css";
 import TodoList from "./components/TodoList";
 import { ConfigProvider, theme } from "antd";
-import { TodosContext } from "./contexts/TodosContext";
-import { useState } from "react";
+import { TodosProvider } from "./contexts/TodosContext";
 import { red } from "@ant-design/colors";
+import { MessageProvider } from "./contexts/MessageContext";
 
 const themeUI = {
-  // 1. Use dark algorithm
   algorithm: theme.darkAlgorithm,
   components: {
     Button: {
@@ -14,19 +13,17 @@ const themeUI = {
       colorError: "default",
     },
   },
-
-  // 2. Combine dark algorithm and compact algorithm
-  // algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
 };
 
 function App() {
-  const [todos, setTodos] = useState([]);
   return (
     <ConfigProvider card={{ className: "to-do-card" }} theme={themeUI}>
       <div className="app">
-        <TodosContext.Provider value={{ todos, setTodos }}>
-          <TodoList />
-        </TodosContext.Provider>
+        <TodosProvider>
+          <MessageProvider>
+            <TodoList />
+          </MessageProvider>
+        </TodosProvider>
       </div>
     </ConfigProvider>
   );

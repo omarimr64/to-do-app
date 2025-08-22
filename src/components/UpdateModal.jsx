@@ -1,33 +1,34 @@
 import { Modal, Input } from "antd";
-import { useState, useContext, useEffect } from "react";
-import { TodosContext } from "../contexts/TodosContext";
+import { useState, useEffect } from "react";
+import { useTodosDispatch } from "../contexts/TodosContext";
+import { useMessage } from "../contexts/MessageContext";
 
 const UpdateModal = function ({ todo, modal }) {
-  const initialEditTodo = {
-    title: todo.title,
-    description: todo.description,
-  };
-  const [editTodo, setEditTodo] = useState(initialEditTodo);
+  const [editTodo, setEditTodo] = useState({ title: "", description: "" });
   const { isUpdModalOpen, setIsUpdModalOpen } = modal;
-  const { todos, setTodos } = useContext(TodosContext);
+
+  console.log(todo);
+
+  const dispatch = useTodosDispatch();
+  const { messageApi } = useMessage();
 
   useEffect(() => {
-    setEditTodo(initialEditTodo);
+    if (!todo) return;
+
+    const currentTodoData = {
+      title: todo.title,
+      description: todo.description,
+    };
+    setEditTodo(currentTodoData);
   }, [isUpdModalOpen]);
 
   function handleUpdateTodo() {
-    const updatedTodos = todos.map((t) => {
-      if (t.id === todo.id)
-        return {
-          ...t,
-          title: editTodo.title,
-          description: editTodo.description,
-        };
-      return t;
-    });
+    dispatch({ type: "updated", payload: { todo, editTodo } });
 
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    messageApi.open({
+      type: "success",
+      content: "تم تعديل المهمة بنجاح",
+    });
     setIsUpdModalOpen(false);
   }
 
@@ -53,7 +54,7 @@ const UpdateModal = function ({ todo, modal }) {
       >
         <Input
           size="large"
-          value={editTodo.title}
+          value={editTodo.title ? editTodo.title : ""}
           placeholder="عنوان المهمة"
           style={{
             direction: "rtl",
@@ -66,7 +67,7 @@ const UpdateModal = function ({ todo, modal }) {
 
         <Input
           placeholder="وصف المهمة"
-          value={editTodo.description}
+          value={editTodo.description ? editTodo.description : ""}
           size="large"
           style={{
             direction: "rtl",
