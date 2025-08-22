@@ -1,16 +1,17 @@
 import { Typography, Card, Segmented } from "antd";
 import Todo from "./Todo";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { TodosContext } from "../contexts/TodosContext";
+import { useEffect, useMemo, useState } from "react";
 import NewTodoForm from "./NewTodoForm";
 import UpdateModal from "./UpdateModal";
 import DeleteModal from "./DeleteModal";
+import { useTodos, useTodosDispatch } from "../contexts/TodosContext";
 
 const { Title } = Typography;
 
 const TodoList = function () {
-  const { todos, setTodos } = useContext(TodosContext);
   const [displayedTodosType, setDisplayedTodosType] = useState("all");
+  const todos = useTodos();
+  const dispatch = useTodosDispatch();
 
   const [currentTodo, setCurrentTodo] = useState(null);
   const [isDelModalOpen, setIsDelModalOpen] = useState(false);
@@ -38,8 +39,7 @@ const TodoList = function () {
   });
 
   useEffect(() => {
-    const storageTodos = JSON.parse(localStorage.getItem("todos"));
-    if (storageTodos) setTodos(storageTodos);
+    dispatch({ type: "read" });
   }, []);
 
   // Modals functions

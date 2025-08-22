@@ -1,24 +1,17 @@
 import "./todo.css";
 import { EditFilled, DeleteFilled } from "@ant-design/icons";
 import { Card, Button, Checkbox, Typography } from "antd";
-import { useContext } from "react";
-import { TodosContext } from "../contexts/TodosContext";
+import { useTodosDispatch } from "../contexts/TodosContext";
 import { useMessage } from "./../contexts/MessageContext";
 
 const { Title } = Typography;
 
 const Todo = function ({ todo, openDelModal, openUpdModal }) {
-  const { todos, setTodos } = useContext(TodosContext);
+  const dispatch = useTodosDispatch();
   const { messageApi } = useMessage();
 
   function handleCheckTodo() {
-    const updatedTodos = todos.map((t) => {
-      if (t.id === todo.id) return { ...t, isCompleted: !t.isCompleted };
-      return t;
-    });
-
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    dispatch({ type: "checked", payload: todo });
 
     if (todo.isCompleted) return;
     messageApi.open({

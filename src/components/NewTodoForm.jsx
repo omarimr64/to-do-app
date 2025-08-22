@@ -1,8 +1,7 @@
 import { Input, Button } from "antd";
-import { TodosContext } from "../contexts/TodosContext";
-import { useContext, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
 import { useMessage } from "../contexts/MessageContext";
+import { useTodosDispatch } from "../contexts/TodosContext";
 
 const NewTodoForm = function () {
   const [inputData, setInputData] = useState({
@@ -10,21 +9,11 @@ const NewTodoForm = function () {
     description: "",
   });
 
-  const { todos, setTodos } = useContext(TodosContext);
   const { messageApi } = useMessage();
+  const dispatch = useTodosDispatch();
 
   function handleAddNewTodo() {
-    const newTodo = {
-      id: uuidv4(),
-      title: inputData.title,
-      description: inputData.description,
-      isCompleted: false,
-    };
-
-    const updatedTodos = [...todos, newTodo];
-
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    dispatch({ type: "added", payload: { inputData } });
 
     setInputData({ title: "", description: "" });
     messageApi.open({

@@ -1,12 +1,15 @@
 import { Modal, Input } from "antd";
-import { useState, useContext, useEffect } from "react";
-import { TodosContext } from "../contexts/TodosContext";
+import { useState, useEffect } from "react";
+import { useTodosDispatch } from "../contexts/TodosContext";
 import { useMessage } from "../contexts/MessageContext";
 
 const UpdateModal = function ({ todo, modal }) {
   const [editTodo, setEditTodo] = useState({ title: "", description: "" });
   const { isUpdModalOpen, setIsUpdModalOpen } = modal;
-  const { todos, setTodos } = useContext(TodosContext);
+
+  console.log(todo);
+
+  const dispatch = useTodosDispatch();
   const { messageApi } = useMessage();
 
   useEffect(() => {
@@ -20,18 +23,7 @@ const UpdateModal = function ({ todo, modal }) {
   }, [isUpdModalOpen]);
 
   function handleUpdateTodo() {
-    const updatedTodos = todos.map((t) => {
-      if (t.id === todo.id)
-        return {
-          ...t,
-          title: editTodo.title,
-          description: editTodo.description,
-        };
-      return t;
-    });
-
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    dispatch({ type: "updated", payload: { todo, editTodo } });
 
     messageApi.open({
       type: "success",
