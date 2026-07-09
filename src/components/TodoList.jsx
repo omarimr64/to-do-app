@@ -1,9 +1,10 @@
-import { Typography, Card, Segmented } from "antd";
+import { Typography, Card, Segmented, Button } from "antd";
 import Todo from "./Todo";
 import { useEffect, useMemo, useState } from "react";
 import NewTodoForm from "./NewTodoForm";
 import UpdateModal from "./UpdateModal";
 import DeleteModal from "./DeleteModal";
+import DeleteAllModal from "./DeleteAllModal";
 import { useTodos, useTodosDispatch } from "../contexts/TodosContext";
 
 const { Title } = Typography;
@@ -15,6 +16,7 @@ const TodoList = function () {
 
   const [currentTodo, setCurrentTodo] = useState(null);
   const [isDelModalOpen, setIsDelModalOpen] = useState(false);
+  const [isDelAllModalOpen, setIsDelAllModalOpen] = useState(false);
   const [isUpdModalOpen, setIsUpdModalOpen] = useState(false);
 
   const renderedTodos = useMemo(() => {
@@ -53,6 +55,10 @@ const TodoList = function () {
     setIsUpdModalOpen(true);
   }
 
+  function openDelAllModal() {
+    setIsDelAllModalOpen(true);
+  }
+
   return (
     <>
       <Card
@@ -84,22 +90,46 @@ const TodoList = function () {
       >
         {/* CONTENT */}
 
-        {/* FILTERING */}
-        <div style={{ direction: "ltr" }}>
-          <Segmented
-            size="large"
-            options={[
-              { label: "الكل", value: "all" },
-              { label: "المكتمل", value: "completed" },
-              { label: "الغير مكتمل", value: "uncompleted" },
-            ]}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            marginBottom: 15,
+          }}
+        >
+          {/* FILTERING */}
+          <div style={{ direction: "ltr" }}>
+            <Segmented
+              size="large"
+              options={[
+                { label: "الكل", value: "all" },
+                { label: "المكتمل", value: "completed" },
+                { label: "الغير مكتمل", value: "uncompleted" },
+              ]}
+              style={{
+                marginBottom: "15px",
+                height: "fit-content",
+              }}
+              value={displayedTodosType}
+              onChange={(value) => setDisplayedTodosType(value)}
+            />
+          </div>
+
+          {/* DELETE ALL */}
+          <Button
+            type="default"
+            color="danger"
+            variant="outlined"
             style={{
-              marginBottom: "15px",
-              height: "fit-content",
+              boxShadow: "none",
             }}
-            value={displayedTodosType}
-            onChange={(value) => setDisplayedTodosType(value)}
-          />
+            onClick={openDelAllModal}
+            disabled={!todos.length}
+          >
+            حذف الكل
+          </Button>
         </div>
 
         {/* TO DO LIST */}
@@ -138,6 +168,9 @@ const TodoList = function () {
         todo={currentTodo}
         modal={{ isDelModalOpen, setIsDelModalOpen }}
       />
+
+      {/* DELETE ALL MODAL */}
+      <DeleteAllModal modal={{ isDelAllModalOpen, setIsDelAllModalOpen }} />
 
       {/* UPDATE MODAL */}
       <UpdateModal
