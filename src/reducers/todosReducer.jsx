@@ -56,6 +56,11 @@ export default function todosReducer(currentTodos, action) {
       return storageTodos;
     }
 
+    case "deletedAll": {
+      localStorage.removeItem("todos");
+      return [];
+    }
+
     default: {
       throw new Error("Unknown action " + action.type);
     }
